@@ -32,7 +32,7 @@
 				<configuration>
 					<cloudHubDeployment>
 					<uri>https://anypoint.mulesoft.com</uri>
-					<username>lini_bigmule</username>
+					<username>lini_mulesoft</username>
 					<environment>Sandbox</environment>
 					<objectStoreV2>true</objectStoreV2>
 					<workers>1</workers>
