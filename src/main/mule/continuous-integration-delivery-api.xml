@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c50623e8-30f0-41cd-89ac-cfabee1bd76f" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="414a27e8-4cd6-4b50-8a79-a532b72ef77d" basePath="/api/timezone">
+		<http:request-connection host="worldtimeapi.org" />
+	</http:request-config>
+	<flow name="worltimezone-api" doc:id="95026412-651c-4a81-922b-80b7ce99b09f" >
+		<http:listener doc:name="Listening to 8081" doc:id="366c1dd6-f648-4930-8cee-ecf893472e65" config-ref="HTTP_Listener_config" path="/cicd"/>
+		<http:request method="GET" doc:name="Request to World API" doc:id="6107051f-5e96-4cda-84f4-6a6ba81ef163" config-ref="HTTP_Request_configuration" path="/{region}/{city}">
+			<http:body ><![CDATA[payload]]></http:body>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	city : attributes.queryParams.city,
+	region : attributes.queryParams.region
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform doc:name="Payload to Json" doc:id="126a4f71-824d-4e73-bfe7-7593973cf1f0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="3fcd2ec8-6b9f-44c1-b93f-ca1d9b8cf28c" message="paylaod #[payload]" />
+	</flow>
+</mule>
