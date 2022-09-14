@@ -29,6 +29,19 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<cloudHubDeployment>
+					<uri>https://anypoint.mulesoft.com</uri>
+					<username>lini_bigmule</username>
+					<environment>Sandbox</environment>
+					<objectStoreV2>true</objectStoreV2>
+					<workers>1</workers>
+					<workerType>Micro</workerType>
+					<applicationName>worldtimezone-api</applicationName>
+					<password>Keziah@123</password>
+					<muleVersion>4.4.0</muleVersion>				
+					</cloudHubDeployment>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
